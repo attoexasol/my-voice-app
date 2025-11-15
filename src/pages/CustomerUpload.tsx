@@ -670,11 +670,11 @@ function CustomerUploadPage() {
         setUploadedFiles((prev) => prev.filter((f) => f.id !== fileId))
       }
       onBack={() => navigate("/onboarding/upload")}
-      onContinue={() => navigate("/dashboard")} // NEXT
-      onSkip={() => navigate("/dashboard")} // SKIP
+      onContinue={() => navigate("/dashboard")} 
+      onSkip={() => navigate("/dashboard")} 
       uploadedFiles={uploadedFiles}
       isUploading={isUploading}
-      showSkip={true} // 👈 Skip button enabled
+      showSkip={true} 
     />
   );
 }

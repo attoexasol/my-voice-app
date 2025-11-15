@@ -770,17 +770,17 @@ export function DocumentUploadPage({
         {/* FOOTER BUTTONS */}
         {/* FOOTER BUTTONS */}
         {mode === "invoices" ? (
-          // 👉 Invoice Page Footer
+          //  Invoice Page Footer
           <div className="flex justify-end items-center mt-6">
             <div className="flex gap-4">
-              <Button
+              {/* <Button
                 onClick={onBack}
                 variant="outline"
                 size="sm"
                 className="bg-white shadow-sm"
               >
                 <ArrowLeft className="w-4 h-4 mr-2" /> Back
-              </Button>
+              </Button> */}
               <Button
                 onClick={onContinue}
                 disabled={nextDisabled}
