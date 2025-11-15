@@ -589,17 +589,30 @@ export default function OnboardingUpload() {
   );
 
   return (
+    // <DocumentUploadPage
+    //   mode="invoices"
+    //   onFileUpload={handleFileUpload}
+    //   onFileRemove={(fileId) =>
+    //     setUploadedFiles((prev) => prev.filter((f) => f.id !== fileId))
+    //   }
+    //   onBack={() => navigate("/profile-steps")}
+    //   onContinue={() => navigate("/customer-upload")}
+    //   uploadedFiles={uploadedFiles}
+    //   isUploading={isUploading}
+    //   showSkip={false}
+    // />
+
     <DocumentUploadPage
       mode="invoices"
       onFileUpload={handleFileUpload}
       onFileRemove={(fileId) =>
         setUploadedFiles((prev) => prev.filter((f) => f.id !== fileId))
       }
-      onBack={() => navigate("/profile-steps")}
+      // onBack={() => navigate(-1)} 
       onContinue={() => navigate("/customer-upload")}
       uploadedFiles={uploadedFiles}
       isUploading={isUploading}
-      showSkip={false} 
+      showSkip={false}
     />
   );
 }

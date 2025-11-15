@@ -1045,6 +1045,11 @@
 //   const bookingCode = params.bookingCode || "";
 //   return <PublicBookingPage bookingCode={bookingCode} />;
 // }
+
+
+
+
+
 import type { AuthChangeEvent, Session } from "@supabase/supabase-js";
 import { Loader2 } from "lucide-react";
 import React, { useEffect, useState } from "react";
@@ -1362,7 +1367,7 @@ function AppContent() {
             </ProtectedRoute>
           }
         />
-
+       
         {/* Onboarding Upload */}
         <Route
           path="/onboarding/upload"
@@ -1545,3 +1550,429 @@ export function PublicBookingPageWrapper() {
   const bookingCode = params.bookingCode || "";
   return <PublicBookingPage bookingCode={bookingCode} />;
 }
+
+
+
+
+
+
+
+// import type { AuthChangeEvent, Session } from "@supabase/supabase-js";
+// import { Loader2 } from "lucide-react";
+// import React, { useEffect, useState } from "react";
+// import {
+//   Navigate,
+//   Route,
+//   BrowserRouter as Router,
+//   Routes,
+//   useLocation,
+//   useNavigate,
+//   useParams,
+// } from "react-router-dom";
+// import { toast } from "sonner";
+// import { MyAIInvoicesLogo } from "./components/MyAIInvoicesLogo";
+// import { Toaster } from "./components/ui/sonner";
+// import { supabase } from "./utils/supabase/client";
+// import { User } from "./utils/user";
+
+// // Pages
+// import { AuthPage } from "./pages/AuthPage";
+// import InvoicePage from "./pages/invoice";
+// import OnboardingUpload from "./pages/OnboardingUpload";
+// import QuoteResponse from "./pages/QuoteResponse";
+// import CustomerUpload from "./pages/CustomerUpload";
+
+// // Components
+// import BuilderWrapper from "./components/BuilderWrapper";
+// import { CalendarView } from "./components/CalendarView";
+// import { ChatBot } from "./components/ChatBot";
+// import { ClientManagement } from "./components/ClientManagement";
+// import { ComingSoonPage } from "./components/ComingSoonPage";
+// import { Dashboard } from "./components/Dashboard";
+// import { DatabaseDashboard } from "./components/DatabaseDashboard";
+// import { PublicBookingPage } from "./components/design/PublicBookingPage";
+// import { EmailInbox } from "./components/EmailInbox";
+// import { InvoiceDashboard } from "./components/InvoiceDashboard";
+// import { InvoicesView } from "./components/InvoicesView";
+// import { ItemCatalog } from "./components/ItemCatalog";
+// import { VoiceRecorder } from "./components/VoiceRecorder";
+
+// // Step components
+// import StepContact from "./components/StepContact";
+// import StepLocation from "./components/StepLocation";
+// import StepTrade from "./components/StepTrade";
+
+// /* =============================
+//    ProtectedRoute Component
+// ============================= */
+// function ProtectedRoute({
+//   children,
+//   user,
+// }: {
+//   children: React.ReactNode;
+//   user: User | null;
+// }) {
+//   if (!user) return <Navigate to="/signup" replace />;
+//   return <>{children}</>;
+// }
+
+// /* =============================
+//    Profile Steps Page
+// ============================= */
+// function ProfileStepsPage({ onFinish }: { onFinish: () => void }) {
+//   const location = useLocation();
+//   const [currentStep, setCurrentStep] = useState(location.state?.step || 1);
+//   const [formData, setFormData] = useState<any>({});
+
+//   const handleNext = () => setCurrentStep((s) => Math.min(s + 1, 3));
+//   const handleBack = () => setCurrentStep((s) => Math.max(s - 1, 1));
+
+//   const handleFinish = () => {
+//     toast.success("Profile setup complete!");
+//     onFinish();
+//   };
+
+//   return (
+//     <div className="min-h-screen bg-gradient-to-br from-[#e8e6f5] via-[#f0eff8] to-[#e8e6f5] flex flex-col">
+//       {/* Header */}
+//       {currentStep < 4 && (
+//         <header className="flex items-center justify-between px-8 py-6">
+//           <div
+//             className="text-[#5b4dff]"
+//             style={{ fontSize: "24px", fontWeight: 600 }}
+//           >
+//             My AI
+//           </div>
+//           <div
+//             className="text-[#8b7fff]"
+//             style={{ fontSize: "14px", fontWeight: 500 }}
+//           >
+//             Invoices
+//           </div>
+//         </header>
+//       )}
+
+//       {/* Main Content */}
+//       <div className="flex-1 flex flex-col items-center px-4 pt-8">
+//         {/* Title + Subtitle */}
+//         {currentStep < 4 && (
+//           <>
+//             <h1
+//               className="text-center text-[#7c3aed] mb-3"
+//               style={{
+//                 fontSize: "48px",
+//                 fontWeight: 700,
+//                 letterSpacing: "-0.02em",
+//               }}
+//             >
+//               Complete Your Profile
+//             </h1>
+
+//             <p
+//               className="text-center text-[#6b7280] mb-10"
+//               style={{ fontSize: "16px", fontWeight: 400 }}
+//             >
+//               {currentStep === 1 &&
+//                 "Enter your business address and contact number"}
+//               {currentStep === 2 && "What is your trade or profession?"}
+//               {currentStep === 3 && "Where do you supply your services?"}
+//             </p>
+//           </>
+//         )}
+
+//         {/* Step Progress Indicator */}
+//         {currentStep < 4 && (
+//           <div className="flex items-center gap-4 mb-16">
+//             {["Contact", "Trade", "Location"].map((label, index) => {
+//               const stepNum = index + 1;
+//               const isActive = currentStep === stepNum;
+//               const isCompleted = currentStep > stepNum;
+
+//               return (
+//                 <React.Fragment key={label}>
+//                   <div className="flex flex-col items-center gap-2">
+//                     <div
+//                       className={`w-12 h-12 rounded-full flex items-center justify-center ${
+//                         isCompleted
+//                           ? "bg-[#10b981]"
+//                           : isActive
+//                           ? "bg-[#5b4dff]"
+//                           : "bg-[#d1d5db]"
+//                       }`}
+//                     >
+//                       {isCompleted ? (
+//                         <svg
+//                           width="20"
+//                           height="20"
+//                           viewBox="0 0 20 20"
+//                           fill="none"
+//                         >
+//                           <path
+//                             d="M16.6667 5L7.50004 14.1667L3.33337 10"
+//                             stroke="white"
+//                             strokeWidth="2.5"
+//                             strokeLinecap="round"
+//                             strokeLinejoin="round"
+//                           />
+//                         </svg>
+//                       ) : (
+//                         <span
+//                           className="text-white"
+//                           style={{ fontSize: "18px", fontWeight: 600 }}
+//                         >
+//                           {stepNum}
+//                         </span>
+//                       )}
+//                     </div>
+//                     <span
+//                       className="text-[#374151]"
+//                       style={{ fontSize: "13px", fontWeight: 500 }}
+//                     >
+//                       {label}
+//                     </span>
+//                   </div>
+
+//                   {index < 2 && (
+//                     <div
+//                       className={`h-0.5 w-16 ${
+//                         currentStep > stepNum ? "bg-[#10b981]" : "bg-[#d1d5db]"
+//                       }`}
+//                     ></div>
+//                   )}
+//                 </React.Fragment>
+//               );
+//             })}
+//           </div>
+//         )}
+
+//         {/* Step Content */}
+//         <div className="w-full max-w-[680px] mb-12">
+//           {currentStep === 1 && (
+//             <StepContact
+//               formData={formData}
+//               setFormData={setFormData}
+//               onNext={handleNext}
+//             />
+//           )}
+//           {currentStep === 2 && (
+//             <StepTrade
+//               formData={formData}
+//               setFormData={setFormData}
+//               onNext={handleNext}
+//               onBack={handleBack}
+//             />
+//           )}
+//           {currentStep === 3 && (
+//             <StepLocation
+//               formData={formData}
+//               setFormData={setFormData}
+//               onBack={handleBack}
+//               onFinish={handleFinish}
+//             />
+//           )}
+//         </div>
+//       </div>
+//     </div>
+//   );
+// }
+
+// /* =============================
+//    AppContent Component
+// ============================= */
+// function AppContent() {
+//   const [user, setUser] = useState<User | null>(null);
+//   const [accessToken, setAccessToken] = useState<string>("");
+//   const [loading, setLoading] = useState(true);
+//   const navigate = useNavigate();
+//   const location = useLocation();
+
+//   useEffect(() => {
+//     (async () => {
+//       try {
+//         const { data } = await supabase.auth.getSession();
+//         if (data?.session?.user) {
+//           setUser(data.session.user as User);
+//           setAccessToken(data.session.access_token ?? "");
+//         }
+//       } catch (err) {
+//         console.error("Session get error:", err);
+//       } finally {
+//         setLoading(false);
+//       }
+//     })();
+
+//     const { data: listener } = supabase.auth.onAuthStateChange(
+//       (_event: AuthChangeEvent, session: Session | null) => {
+//         if (session?.user) {
+//           setUser(session.user as User);
+//           setAccessToken(session.access_token ?? "");
+//         } else {
+//           setUser(null);
+//           setAccessToken("");
+//         }
+//       }
+//     );
+
+//     return () => {
+//       listener?.subscription?.unsubscribe();
+//     };
+//   }, []);
+
+//   const handleSignUpComplete = (userData: User, token: string) => {
+//     setUser(userData);
+//     setAccessToken(token);
+//     navigate("/profile-steps");
+//   };
+
+//   const handleFinishSteps = () => navigate("/onboarding/upload");
+
+//   const handleFinishOnboarding = () => navigate("/dashboard");
+
+//   const handleSignOut = async () => {
+//     await supabase.auth.signOut();
+//     setUser(null);
+//     setAccessToken("");
+//     navigate("/signup");
+//   };
+
+//   if (loading) {
+//     return (
+//       <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50">
+//         <MyAIInvoicesLogo height={96} />
+//         <Loader2 className="animate-spin w-8 h-8 mt-4 text-indigo-600" />
+//         <p className="text-gray-500 mt-2">Loading...</p>
+//       </div>
+//     );
+//   }
+
+//   return (
+//     <BuilderWrapper
+//       user={user}
+//       accessToken={accessToken}
+//       onSignOut={handleSignOut}
+//     >
+//       <Toaster position="top-right" />
+
+//       <Routes>
+//         {/* Signup */}
+//         <Route
+//           path="/signup"
+//           element={
+//             !user ? (
+//               <AuthPage onComplete={handleSignUpComplete} supabase={supabase} />
+//             ) : (
+//               <Navigate to="/profile-steps" replace />
+//             )
+//           }
+//         />
+
+//         {/* Profile Steps */}
+//         <Route
+//           path="/profile-steps"
+//           element={
+//             <ProtectedRoute user={user}>
+//               <ProfileStepsPage onFinish={handleFinishSteps} />
+//             </ProtectedRoute>
+//           }
+//         />
+
+//         {/* Invoice Upload */}
+//         <Route
+//           path="/onboarding/upload"
+//           element={
+//             <ProtectedRoute user={user}>
+//               <OnboardingUpload onBackRoute="/profile-steps" />
+//             </ProtectedRoute>
+//           }
+//         />
+
+//         {/* Customer Upload */}
+//         <Route
+//           path="/customer-upload"
+//           element={
+//             <ProtectedRoute user={user}>
+//               <CustomerUpload />
+//             </ProtectedRoute>
+//           }
+//         />
+
+//         {/* Dashboard */}
+//         <Route
+//           path="/dashboard"
+//           element={
+//             <ProtectedRoute user={user}>
+//               <Dashboard user={user!} onSignOut={handleSignOut} />
+//             </ProtectedRoute>
+//           }
+//         />
+
+//         {/* Other routes */}
+//         <Route
+//           path="/calendar"
+//           element={
+//             <CalendarView accessToken={accessToken} onSignOut={handleSignOut} />
+//           }
+//         />
+//         <Route
+//           path="/email"
+//           element={
+//             <EmailInbox accessToken={accessToken} onSignOut={handleSignOut} />
+//           }
+//         />
+//         <Route
+//           path="/clients"
+//           element={<ClientManagement userId={user?.id!} />}
+//         />
+//         <Route path="/catalog" element={<ItemCatalog userId={user?.id!} />} />
+//         <Route
+//           path="/invoice-dashboard"
+//           element={
+//             <InvoiceDashboard
+//               accessToken={accessToken}
+//               onSignOut={handleSignOut}
+//             />
+//           }
+//         />
+//         <Route
+//           path="/invoices"
+//           element={
+//             <InvoicesView accessToken={accessToken} onSignOut={handleSignOut} />
+//           }
+//         />
+//         <Route path="/invoice/:id" element={<InvoicePage />} />
+//         <Route path="/book" element={<ComingSoonPage />} />
+//         <Route path="/quote/:quoteId/response" element={<QuoteResponse />} />
+
+//         {/* Default */}
+//         <Route
+//           path="/"
+//           element={<Navigate to={user ? "/dashboard" : "/signup"} replace />}
+//         />
+//         <Route
+//           path="*"
+//           element={<Navigate to={user ? "/dashboard" : "/signup"} replace />}
+//         />
+//       </Routes>
+//     </BuilderWrapper>
+//   );
+// }
+
+// /* =============================
+//    Main App Wrapper
+// ============================= */
+// export default function App() {
+//   return (
+//     <Router>
+//       <AppContent />
+//     </Router>
+//   );
+// }
+
+// /* =============================
+//    Public Booking Wrapper
+// ============================= */
+// export function PublicBookingPageWrapper() {
+//   const params = useParams();
+//   const bookingCode = params.bookingCode || "";
+//   return <PublicBookingPage bookingCode={bookingCode} />;
+// }
